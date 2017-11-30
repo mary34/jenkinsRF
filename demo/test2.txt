@@ -1,0 +1,12 @@
+*** Settings ***
+Documentation     引入资源文件
+Resource          myresource.txt
+
+*** Test Cases ***
+case1
+    ${loginData}    Create Dictionary    dispAccount=${dispAccount}    dispPassword=${dispPassword}
+    Create session    car    ${carinnerbeta}
+    ${loginResp}    Post    car    /carpool/ztc/disp/login    data=${loginData}
+    ${loginRespToJson}    to json    ${loginResp.content}
+    ${loginRespCode}    convert to string    ${loginRespToJson[u'bstatus'][u'code']}
+    Should Be Equal as Strings    ${loginRespCode}    0
