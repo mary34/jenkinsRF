@@ -1,0 +1,16 @@
+*** Settings ***
+Library           RequestsLibrary
+
+*** Variables ***
+${dispAccount}    13658089256
+${dispPassword}    666666
+${carinnerbeta}    http://carinnerbeta.qunar.com
+
+*** Keywords ***
+login
+    ${loginData}    Create Dictionary    dispAccount=${dispAccount}    dispPassword=${dispPassword}
+    Create session    car    ${carinnerbeta}
+    ${loginResp}    Post    car    /carpool/ztc/disp/login    data=${loginData}
+    ${loginRespToJson}    to json    ${loginResp.content}
+    ${loginRespCode}    convert to string    ${loginRespToJson[u'bstatus'][u'code']}
+    Should Be Equal as Strings    ${loginRespCode}    0
